@@ -32,6 +32,7 @@ class FuncAeroProp:
 
         # lift_cruise_forces_moments
         rho = env.Atmosphere.Density
+        eng_speed = eng_speed.reshape(9, 1)  # Ensure Vec9_1
         controls = TiltwingControls(eng_speed, surfs.aileron, surfs.flap, surfs.elevator, surfs.rudder, 0, 0)
         fm_total, fm_aero, fm_prop = self.lift_cruise_force_moments(rho, vel_body, ang_body, controls, compute_derivs)
         fm_total = TotalFM(fm_total[:3, None], fm_total[3:, None], h_b, hdot_b)
