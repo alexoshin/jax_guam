@@ -89,6 +89,12 @@ class LiftPlusCruise:
         """Control dimension."""
         return 14
 
+    @staticmethod
+    def get_default_x_init() -> State:
+        """Returns the default initial state."""
+        aircraft_state_init = jnp.array(AircraftState.GetDefault13())
+        return aircraft_state_to_state_space(aircraft_state_init)
+
     def f(self, x: State, u: Control) -> State:
         r"""Computes the continuous-time dynamics `\dot{x} = f(x, u)`."""
 
@@ -127,9 +133,3 @@ class LiftPlusCruise:
         r"""Computes the discrete-time dynamics `x' = F(x, u)`."""
         # Euler integration
         return x + self.f(x, u) * self.dt
-
-    @staticmethod
-    def get_default_x_init() -> State:
-        """Returns the default initial state."""
-        aircraft_state_init = jnp.array(AircraftState.GetDefault13())
-        return aircraft_state_to_state_space(aircraft_state_init)
