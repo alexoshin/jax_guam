@@ -79,6 +79,16 @@ class LiftPlusCruise:
         # Initialize the environment
         self._environment = Environment()
 
+    @property
+    def n_x(self) -> int:
+        """State dimension."""
+        return 13
+
+    @property
+    def n_u(self) -> int:
+        """Control dimension."""
+        return 14
+
     def f(self, x: State, u: Control) -> State:
         r"""Computes the continuous-time dynamics `\dot{x} = f(x, u)`."""
 
