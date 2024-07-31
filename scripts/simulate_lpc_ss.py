@@ -27,7 +27,9 @@ def main():
     x_init = x_init.at[0:2].set(jr.uniform(key0, (2,), minval=-20.0, maxval=20.0))
 
     # Generate random controls
-    u_traj = jr.uniform(key1, (T, dynamics.n_u), minval=-1.0, maxval=1.0)
+    u_traj = jr.uniform(
+        key1, (T, dynamics.n_u), minval=dynamics.u_min, maxval=dynamics.u_max
+    )
 
     def forward(x, u):
         x_next = dynamics.forward(x, u)

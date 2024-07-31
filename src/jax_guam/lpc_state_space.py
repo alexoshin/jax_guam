@@ -54,6 +54,12 @@ surf_inds = jnp.array([0, 1, 2, 3, 4])
 prop_inds = jnp.array([5, 6, 7, 8, 9, 10, 11, 12, 13])
 
 
+# Default min and max control limits
+# TODO: Need to check the units on these
+u_min = jnp.array([-30.0 * jnp.pi / 180.0] * 5 + [0.0] * 9)
+u_max = jnp.array([30.0 * jnp.pi / 180.0] * 5 + [350.0] * 9)
+
+
 def state_space_to_aircraft_state(x: State) -> AircraftStateVec:
     """Converts the state space vector to an aircraft state vector."""
     return x[ss_to_aircraft_inds]
@@ -67,8 +73,15 @@ def aircraft_state_to_state_space(aircraft_state: AircraftStateVec) -> State:
 class LiftPlusCruise:
     """Lift+Cruise state space model."""
 
-    def __init__(self, dt: float = 0.005):
+    def __init__(
+        self,
+        dt: float = 0.005,
+        u_min: Control = u_min,
+        u_max: Control = u_max,
+    ):
         self.dt = dt
+        self.u_min = u_min
+        self.u_max = u_max
 
         # Initialize the L+C aircraft dynamics model
         self.aero_prop = FuncAeroProp()
