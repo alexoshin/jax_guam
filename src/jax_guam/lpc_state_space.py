@@ -19,7 +19,7 @@ from jaxtyping import Array, Float
 from .functional.aero_prop_new import FuncAeroProp
 from .functional.vehicle_eom_simple import VehicleEOMSimple
 from .subsystems.environment.environment import Environment
-from .guam_types import AircraftStateVec, PropAct, SurfAct
+from .guam_types import AircraftState, AircraftStateVec, PropAct, SurfAct
 
 # NOTE: the order of the aircraft state is (vel, pqr, pos, quat)
 # This is a little less intuitive when working with a SS model, so we'll reorder it to (pos, quat, vel, pqr)
@@ -117,3 +117,9 @@ class LiftPlusCruise:
         r"""Computes the discrete-time dynamics `x' = F(x, u)`."""
         # Euler integration
         return x + self.f(x, u) * self.dt
+
+    @staticmethod
+    def get_default_x_init() -> State:
+        """Returns the default initial state."""
+        aircraft_state_init = jnp.array(AircraftState.GetDefault13())
+        return aircraft_state_to_state_space(aircraft_state_init)
